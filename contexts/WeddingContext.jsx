@@ -10,14 +10,15 @@ export function WeddingProvider({ children }) {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    const safeJson = (r) => r.ok ? r.json() : null
     Promise.all([
-      fetch('/api/settings').then(r => r.json()),
-      fetch('/api/guests').then(r => r.json()),
-      fetch('/api/wishes').then(r => r.json()),
+      fetch('/api/settings').then(safeJson).catch(() => null),
+      fetch('/api/guests').then(safeJson).catch(() => []),
+      fetch('/api/wishes').then(safeJson).catch(() => []),
     ]).then(([settings, guestList, wishesList]) => {
       setWeddingInfo(settings)
-      setGuests(guestList)
-      setWishes(wishesList)
+      setGuests(guestList ?? [])
+      setWishes(wishesList ?? [])
     }).finally(() => setLoading(false))
   }, [])
 
