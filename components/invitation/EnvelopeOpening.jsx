@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { useWedding } from '@/contexts/WeddingContext'
 import './EnvelopeOpening.css'
 
-export default function EnvelopeOpening({ onOpen }) {
+export default function EnvelopeOpening({ onOpen, onStartOpen }) {
   const [phase, setPhase] = useState('idle')
   const { weddingInfo, loading } = useWedding()
 
@@ -20,6 +20,7 @@ export default function EnvelopeOpening({ onOpen }) {
 
   const handleOpen = () => {
     if (phase !== 'idle') return
+    onStartOpen?.()
     setPhase('opening')
     setTimeout(() => {
       setPhase('done')

@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { useWedding } from '@/contexts/WeddingContext'
 import EnvelopeOpening from './EnvelopeOpening'
@@ -15,9 +15,55 @@ export default function InvitationPage() {
 
   const [phase, setPhase] = useState('envelope')
   const [cardVisible, setCardVisible] = useState(false)
+  const pianoRef = useRef(null)
+  const weddingRef = useRef(null)
+  const [isMusicActive, setIsMusicActive] = useState(false)
+  const [needsManualStart, setNeedsManualStart] = useState(false)
+  const [isMuted, setIsMuted] = useState(false)
+
+  useEffect(() => {
+    const piano = new Audio('/music/paulyudin-romantic-piano-164822.mp3')
+    piano.loop = true
+    pianoRef.current = piano
+
+    const wedding = new Audio('/music/Beautiful In White.mp3')
+    wedding.loop = true
+    weddingRef.current = wedding
+
+    piano.play().then(() => {
+      setIsMusicActive(true)
+    }).catch(() => {
+      setNeedsManualStart(true)
+    })
+
+    return () => {
+      piano.pause(); piano.src = ''
+      wedding.pause(); wedding.src = ''
+    }
+  }, [])
 
   const guest = guestId ? getGuestById(guestId) : null
   const guestName = guest ? guest.name : null
+
+  const startPiano = () => {
+    pianoRef.current?.play()
+    setIsMusicActive(true)
+    setNeedsManualStart(false)
+  }
+
+  const startMusic = () => {
+    if (pianoRef.current) pianoRef.current.pause()
+    weddingRef.current?.play()
+    setIsMusicActive(true)
+    setNeedsManualStart(false)
+  }
+
+  const toggleMute = () => {
+    const newMuted = !isMuted
+    if (pianoRef.current) pianoRef.current.muted = newMuted
+    if (weddingRef.current) weddingRef.current.muted = newMuted
+    setIsMuted(newMuted)
+  }
 
   const handleEnvelopeOpen = () => {
     setPhase('invitation')
@@ -37,8 +83,18 @@ export default function InvitationPage() {
 
   return (
     <div className="invitation-page">
+      {needsManualStart && (
+        <button className="music-toggle" onClick={startPiano} title="Bật nhạc">
+          🎵
+        </button>
+      )}
+      {isMusicActive && (
+        <button className="music-toggle" onClick={toggleMute} title={isMuted ? 'Bật nhạc' : 'Tắt nhạc'}>
+          {isMuted ? '🔇' : '🎵'}
+        </button>
+      )}
       {phase === 'envelope' && (
-        <EnvelopeOpening onOpen={handleEnvelopeOpen} />
+        <EnvelopeOpening onOpen={handleEnvelopeOpen} onStartOpen={startMusic} />
       )}
 
       {(phase === 'invitation' || phase === 'full') && (
