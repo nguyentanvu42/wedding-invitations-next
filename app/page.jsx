@@ -1,10 +1,11 @@
 'use client'
 import { Suspense } from 'react'
 import InvitationPage from '@/components/invitation/InvitationPage'
+import LoadingScreen from '@/components/invitation/LoadingScreen'
 
 export default function Page() {
   return (
-    <Suspense fallback={<div style={{ textAlign: 'center', padding: '2rem' }}>Đang tải...</div>}>
+    <Suspense fallback={<LoadingScreen />}>
       <InvitationPage />
     </Suspense>
   )

@@ -6,6 +6,7 @@ import EnvelopeOpening from './EnvelopeOpening'
 import InvitationCard from './InvitationCard'
 import PhotoGallery from './PhotoGallery'
 import WishesSection from './WishesSection'
+import LoadingScreen from './LoadingScreen'
 import './InvitationPage.css'
 
 export default function InvitationPage() {
@@ -78,7 +79,7 @@ export default function InvitationPage() {
   }, [phase])
 
   if (loading || !weddingInfo) {
-    return <div style={{ textAlign: 'center', padding: '2rem' }}>Đang tải...</div>
+    return <LoadingScreen />
   }
 
   return (

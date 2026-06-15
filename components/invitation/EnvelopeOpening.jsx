@@ -1,6 +1,7 @@
 'use client'
 import { useState } from 'react'
 import { useWedding } from '@/contexts/WeddingContext'
+import LoadingScreen from './LoadingScreen'
 import './EnvelopeOpening.css'
 
 export default function EnvelopeOpening({ onOpen, onStartOpen }) {
@@ -8,7 +9,7 @@ export default function EnvelopeOpening({ onOpen, onStartOpen }) {
   const { weddingInfo, loading } = useWedding()
 
   if (loading || !weddingInfo) {
-    return <div style={{ textAlign: 'center', padding: '2rem' }}>Đang tải...</div>
+    return <LoadingScreen />
   }
 
   const { bride, groom, reception } = weddingInfo

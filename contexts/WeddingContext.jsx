@@ -10,16 +10,19 @@ export function WeddingProvider({ children }) {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const safeJson = (r) => r.ok ? r.json() : null
-    Promise.all([
-      fetch('/api/settings').then(safeJson).catch(() => null),
-      fetch('/api/guests').then(safeJson).catch(() => []),
-      fetch('/api/wishes').then(safeJson).catch(() => []),
-    ]).then(([settings, guestList, wishesList]) => {
-      setWeddingInfo(settings)
-      setGuests(guestList ?? [])
-      setWishes(wishesList ?? [])
-    }).finally(() => setLoading(false))
+    // Only block rendering on settings — envelope needs bride/groom names
+    fetch('/api/settings').then(r => r.ok ? r.json() : null).catch(() => null)
+      .then(settings => {
+        setWeddingInfo(settings)
+        setLoading(false)
+      })
+
+    // Guests and wishes load in background without blocking the envelope
+    fetch('/api/guests').then(r => r.ok ? r.json() : []).catch(() => [])
+      .then(list => setGuests(list ?? []))
+
+    fetch('/api/wishes').then(r => r.ok ? r.json() : []).catch(() => [])
+      .then(list => setWishes(list ?? []))
   }, [])
 
   const updateWeddingInfo = async (info) => {
