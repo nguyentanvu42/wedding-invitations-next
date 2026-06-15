@@ -1,0 +1,79 @@
+.invitation-page {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #fdf0f0 0%, #fff5f5 30%, #ffffff 100%);
+}
+
+.invitation-content {
+  padding-top: 1.5rem;
+  padding-bottom: 0;
+  position: relative;
+}
+
+.page-bg-flowers {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.bg-flower {
+  position: absolute;
+  color: #f0c8c8;
+  font-size: 5rem;
+  opacity: 0.3;
+}
+
+.bg-flower.top-left {
+  top: -1rem;
+  left: -1rem;
+  transform: rotate(-30deg);
+}
+
+.bg-flower.top-right {
+  top: -1rem;
+  right: -1rem;
+  transform: rotate(30deg);
+}
+
+.invitation-section {
+  position: relative;
+  z-index: 1;
+  padding: 0 0.5rem;
+}
+
+.page-separator {
+  text-align: center;
+  color: var(--color-gold);
+  font-size: 1rem;
+  letter-spacing: 0.5rem;
+  padding: 1.5rem 0;
+}
+
+.gallery-section {
+  background: linear-gradient(180deg, #fff5f5, #ffffff);
+  padding: 0.5rem 0;
+}
+
+.wishes-wrap {
+  border-top: 1px solid #f0d8d8;
+}
+
+.page-footer {
+  text-align: center;
+  padding: 1.5rem;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.8rem;
+  color: #b08080;
+  border-top: 1px solid #f0e0e0;
+}
+
+.animate-fade-up {
+  animation: fadeInUp 0.8s ease forwards;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}

@@ -1,0 +1,82 @@
+.admin-layout {
+  min-height: 100vh;
+  background: #fafafa;
+}
+
+.admin-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #8b1a2d;
+  padding: 0 1.5rem;
+  height: 56px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.admin-header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.admin-logo {
+  font-size: 1.4rem;
+}
+
+.admin-title {
+  font-family: var(--font-script);
+  color: white;
+  font-size: 1.4rem;
+  margin: 0;
+}
+
+.admin-header-right {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.admin-header-btn {
+  color: rgba(255,255,255,0.85) !important;
+  font-size: 0.85rem;
+}
+
+.admin-header-btn:hover {
+  color: white !important;
+  background: rgba(255,255,255,0.1) !important;
+}
+
+.admin-header-btn.ant-btn-dangerous {
+  color: rgba(255,200,200,0.9) !important;
+}
+
+.admin-content {
+  padding: 1.5rem;
+  max-width: 900px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.admin-tabs .ant-tabs-tab {
+  font-family: var(--font-body);
+}
+
+.admin-tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: #8b1a2d;
+}
+
+.admin-tabs .ant-tabs-ink-bar {
+  background: #8b1a2d;
+}
+
+@media (max-width: 600px) {
+  .admin-content {
+    padding: 1rem 0.75rem;
+  }
+
+  .admin-title {
+    font-size: 1.1rem;
+  }
+}
