@@ -17,7 +17,7 @@ function WishCard({ wish }) {
     <div className="wish-card">
       <div className="wish-header">
         <div className="wish-avatar">
-          {wish.guestName.charAt(0).toUpperCase()}
+          {(wish.guestName || '?').charAt(0).toUpperCase()}
         </div>
         <div className="wish-meta">
           <span className="wish-name">{wish.guestName}</span>
@@ -38,10 +38,15 @@ export default function WishesSection({ guestId, guestName }) {
     if (!values.message?.trim()) return
     const name = values.name?.trim() || guestName || 'Khách mời'
     setSubmitting(true)
-    await addWish(guestId || 'anonymous', name, values.message.trim())
-    form.resetFields()
-    setSubmitting(false)
-    message.success('Đã gửi lời chúc!')
+    try {
+      await addWish(guestId || null, name, values.message.trim())
+      form.resetFields()
+      message.success('Đã gửi lời chúc!')
+    } catch {
+      message.error('Gửi lời chúc thất bại, vui lòng thử lại!')
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   if (loading) return null

@@ -75,6 +75,7 @@ export function WeddingProvider({ children }) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ guestId, guestName, message }),
     })
+    if (!res.ok) throw new Error('Failed to add wish')
     const wish = await res.json()
     setWishes(prev => [wish, ...prev])
     return wish
