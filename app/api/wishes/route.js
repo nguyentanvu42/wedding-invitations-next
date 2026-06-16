@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { getWishes, createWish, countRecentWishes } from '@/lib/db'
+import { containsProfanity } from '@/lib/profanity'
 
 export const revalidate = 30
 
@@ -14,6 +15,8 @@ function validateWish({ guestName, message }) {
   if (typeof message !== 'string' || !message.trim()) return 'Vui lòng nhập lời chúc.'
   if (message.trim().length > 300) return 'Lời chúc không được quá 300 ký tự.'
   if (guestName != null && typeof guestName === 'string' && guestName.trim().length > 100) return 'Tên không được quá 100 ký tự.'
+  if (containsProfanity(message)) return 'Lời chúc chứa nội dung không phù hợp.'
+  if (guestName && containsProfanity(guestName)) return 'Tên chứa nội dung không phù hợp.'
   return null
 }
 
