@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Button, Input, Form, message } from 'antd'
 import { useWedding } from '@/contexts/WeddingContext'
 import './WishesSection.css'
@@ -33,17 +33,26 @@ export default function WishesSection({ guestId, guestName }) {
   const { wishes, addWish, loading } = useWedding()
   const [form] = Form.useForm()
   const [submitting, setSubmitting] = useState(false)
+  const [cooldown, setCooldown] = useState(0)
+
+  useEffect(() => {
+    if (cooldown <= 0) return
+    const t = setTimeout(() => setCooldown(c => c - 1), 1000)
+    return () => clearTimeout(t)
+  }, [cooldown])
 
   const handleSubmit = async (values) => {
-    if (!values.message?.trim()) return
+    if (!values.message?.trim() || cooldown > 0) return
     const name = values.name?.trim() || guestName || 'Khách mời'
     setSubmitting(true)
     try {
       await addWish(guestId || null, name, values.message.trim())
       form.resetFields()
       message.success('Đã gửi lời chúc!')
-    } catch {
-      message.error('Gửi lời chúc thất bại, vui lòng thử lại!')
+      setCooldown(15)
+    } catch (e) {
+      if (e.retryAfter) setCooldown(e.retryAfter)
+      message.error(e.message || 'Gửi lời chúc thất bại, vui lòng thử lại!')
     } finally {
       setSubmitting(false)
     }
@@ -84,10 +93,11 @@ export default function WishesSection({ guestId, guestName }) {
             <Button
               htmlType="submit"
               loading={submitting}
+              disabled={cooldown > 0}
               className="wish-submit-btn"
               block
             >
-              Gửi lời chúc 💌
+              {cooldown > 0 ? `Vui lòng đợi ${cooldown}s` : 'Gửi lời chúc 💌'}
             </Button>
           </Form.Item>
         </Form>

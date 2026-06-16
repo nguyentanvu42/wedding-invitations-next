@@ -86,6 +86,10 @@ async function migrate() {
     photoAlbumUrl: 'https://drive.google.com/drive/folders/1FfvelmT9V5NlhdYV6SOAkqzdCIgqzN6L?usp=sharing',
   }
 
+  await client.query(`ALTER TABLE wishes ADD COLUMN IF NOT EXISTS ip TEXT`)
+  await client.query(`CREATE INDEX IF NOT EXISTS idx_wishes_guest_created ON wishes (guest_id, created_at DESC)`)
+  await client.query(`CREATE INDEX IF NOT EXISTS idx_wishes_ip_created ON wishes (ip, created_at DESC)`)
+
   await client.query(
     `INSERT INTO wedding_settings (id, settings)
      VALUES (1, $1::jsonb)
