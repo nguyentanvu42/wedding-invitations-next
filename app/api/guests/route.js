@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server'
 import { getGuests, createGuest, createGuestsBulk } from '@/lib/db'
 
+export const dynamic = 'force-dynamic'
+
 export async function GET() {
   try {
     const guests = await getGuests()

@@ -27,11 +27,15 @@ export function WeddingProvider({ children }) {
 
   const updateWeddingInfo = async (info) => {
     const updated = { ...weddingInfo, ...info }
-    await fetch('/api/settings', {
+    const res = await fetch('/api/settings', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(updated),
     })
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}))
+      throw new Error(err.error || `HTTP ${res.status}`)
+    }
     setWeddingInfo(updated)
   }
 
