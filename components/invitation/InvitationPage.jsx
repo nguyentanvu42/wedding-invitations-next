@@ -27,7 +27,7 @@ export default function InvitationPage() {
     piano.loop = true
     pianoRef.current = piano
 
-    const wedding = new Audio('/music/Beautiful In White.mp3')
+    const wedding = new Audio('/music/em-oi-sau-nay.mp3')
     wedding.loop = true
     weddingRef.current = wedding
 
